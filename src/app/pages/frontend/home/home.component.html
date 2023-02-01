@@ -1,0 +1,205 @@
+<div style="text-align: center;">
+
+  <h1>Submit Tax Filing</h1>
+  <app-upgrade-progress [stage]="stage"></app-upgrade-progress>
+</div>
+<ng-container *ngIf="stage == 1">
+  <div class="container">
+    <div class="card">
+      <h4>1. Tax Filing Detail</h4>
+      <div class="line"></div>
+      <p class="validField">Type of filing</p>
+      <div class="flex">
+        <div class="form-check" style="margin-right: 24px;">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+            [(ngModel)]="data.filingType" [value]="'0'" checked>
+          <label class="form-check-label" for="flexRadioDefault1">
+            Ordunary Filling
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+            (click)="clearValue()" [(ngModel)]="data.filingType" [value]="'1'">
+          <label class="form-check-label" for="flexRadioDefault2">
+            Additional Filling
+          </label>
+        </div>
+      </div>
+      <ng-container *ngIf=" data.filingType == '0'">
+        <p style="margin-top: 24px;" class="validField">VAT Month</p>
+        <div class="flex" style="margin-bottom: 32px;">
+          <select class="form-select select-wrapper" name="month">
+            <option *ngFor="let item of setMonthList" value="{{item.value}}" (change)="setMonthData(item.label)">
+              {{item.label}}</option>
+          </select>
+          <select class="form-select select-wrapper" name="year">
+            <option *ngFor="let item of yearList" value="{{item.value}}" (change)="setMonthData(item.label)">
+              {{item.label}}</option>
+          </select>
+        </div>
+        <div class="flex-between">
+          <h5>2. Tax Computation</h5>
+          <p class="text-link">View Exchange Rate</p>
+        </div>
+        <div class="line"></div>
+
+        <p class="validField">Provide total value taxable electronic service</p>
+        <div class="flex-between">
+          <p>1.Total value of taxable electronic service exclusive of VAT</p>
+          <div>
+            <input type="number" name="saleAmount" id="textRightTwo1" (blur)="calVAT()" [(ngModel)]="data.saleAmount" />
+            <input type="text" id="textRight1" value="THB" disabled />
+          </div>
+        </div>
+        <div class="flex-between">
+          <p>2.Total VAT remitted (7% of 1.)</p>
+          <div>
+            <input type="number" name="taxAmount" id="textRightTwo2" (blur)="subVAT()" [(ngModel)]="data.taxAmount" />
+            <input type="text" id="textRight2" value="THB" disabled />
+            <p *ngIf="isInvalidTax" style="color: red;">Invalid Tax</p>
+          </div>
+
+        </div>
+      </ng-container>
+      <ng-container *ngIf=" data.filingType == '1'">
+        <div class="flex">
+          <div>
+            <p style="margin-top: 24px;" class="validField">Tax Month</p>
+            <div class="flex" style="margin-bottom: 32px;">
+              <select class="form-select select-wrapper" name="month">
+                <option *ngFor="let item of setMonthList" value="{{item.value}}" (change)="setMonthData(item.value)">
+                  {{item.label}}</option>
+              </select>
+              <select class="form-select select-wrapper" name="year">
+                <option *ngFor="let item of yearList" value="{{item.value}}" (change)="setMonthData(item.value)">
+                  {{item.label}}</option>
+              </select>
+              
+            </div>
+          </div>
+          <div>
+            <p style="margin-top: 24px; margin-left: 32px;" class="validField">Type</p>
+            <select style="margin-left: 32px;" class="form-select select-wrapper " name="type">
+              <option value="0" selected>On-Time</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex-between">
+          <h5>2. Tax Computation</h5>
+          <p class="text-link">View Exchange Rate</p>
+        </div>
+        <div class="line"></div>
+
+        <p class="validField">Provide total value taxable electronic service</p>
+        <div class="flex-between">
+          <p>1.Total value of taxable electronic service exclusive of VAT</p>
+          <div>
+            <input type="number" name="saleAmount" id="textRightTwo1" (blur)="calVAT()" [(ngModel)]="data.saleAmount" />
+            <input type="text" id="textRight1" value="THB" disabled />
+          </div>
+        </div>
+        <div class="flex-between">
+          <p>2.Total VAT remitted (7% of 1.)</p>
+          <div>
+            <input type="number" name="taxAmount" id="textRightTwo2" (blur)="subVAT()" [(ngModel)]="data.taxAmount" />
+            <input type="text" id="textRight2" value="THB" disabled />
+            <p *ngIf="isInvalidTax" style="color: red;">Invalid Tax</p>
+          </div>
+
+        </div>
+        <p>In case of late filling and payment, or additional filling</p>
+        <div class="flex-between">
+          <p>3. Surcharge</p>
+          <div>
+            <input type="number" id="textRightTwo1" disabled [(ngModel)]="data.surcharge" />
+            <input type="text" id="textRight1" value="THB" disabled />
+          </div>
+        </div>
+        <div class="flex-between">
+          <p>4. Penalty</p>
+          <div>
+            <input type="number" id="textRightTwo2" disabled [(ngModel)]="data.penalty" />
+            <input type="text" id="textRight2" value="THB" disabled />
+          </div>
+        </div>
+        <div class="flex-between">
+          <p>5. Total amount of VAT,surcharge,and penalty to be remitted(2.+3.+4.)</p>
+          <div>
+            <input type="number" id="textRightTwo2" disabled [(ngModel)]="data.totalAmount" />
+            <input type="text" id="textRight2" value="THB" disabled />
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="stage == 2">
+  <div class="container">
+    <div class="card">
+      <h4>Tax Filing Detail</h4>
+      <div class="line"></div>
+      <div class="flex">
+        <p class="col-2">Type of filing</p>
+        <p class="col-10">
+          <span *ngIf="data.filingType == '0'">Ordunary Filling</span>
+          <span *ngIf="data.filingType == '1'">Additional Filling</span>
+        </p>
+      </div>
+      <div class="flex">
+        <p class="col-2">VAT Month</p>
+        <p class="col-10">{{data.month}} {{data.year}}</p>
+      </div>
+      <h4>Tax Computation</h4>
+      <div class="line"></div>
+      <div class="flex">
+        <p class="col-8">Total value of taxable electronic service exclusive of VAT</p>
+        <p class="col-4">{{data.saleAmount}} THB</p>
+      </div>
+      <div class="flex">
+        <span class="col-8">
+          <p style="margin: 0;">Total VAT to be remitted</p>
+          <p >(7% of Total value of taxable electronic service exclusive of VAT)</p>
+        </span>
+        <p class="col-4">{{data.taxAmount}} THB</p>
+      </div>
+      <div class="flex">
+        <p class="col-8">Total Amount payable</p>
+        <p class="col-4">{{data.totalAmount}} THB</p>
+      </div>
+      <div style="margin-top:16px;">
+        <h4>Declaration</h4>
+        <div class="line"></div>
+        <p> i hereby certify that information given above are true and correct and agree to be bound by such information</p>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="stage==1">
+  <div class="container flex">
+    <div style="margin-top: 32px;">
+      <button type="button" class="btn btn-outline-secondary" (click)="backStage()">Back</button>
+      <button type="button" style="margin-left: 24px;" (click)="nextStage()" class="btn btn-primary">Next</button>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="stage==2">
+  <div class="container flex">
+    <div style="margin-top: 32px; width: 100%; text-align: center;">
+      <button type="button" style="margin-left: 24px;" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">Confirm and Submit</button>
+    </div>
+  </div>
+</ng-container>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tax Filling</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>{{json}}</p>
+      </div>
+    </div>
+  </div>
+</div>

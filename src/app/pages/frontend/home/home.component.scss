@@ -1,0 +1,54 @@
+.card{
+    padding: 24px;
+}
+.line {
+    margin-bottom: 32px;
+    height: 1px;
+    width: 100%;
+    background: #6681A1;
+  }
+  .select-wrapper{
+    width: 200px;
+    margin-right: 24px;
+  }
+  .text-link{
+    cursor: pointer;
+    text-decoration: underline;
+    margin: 0;
+  }
+  .flex-between{
+    display: flex;
+    justify-content: space-between;
+  }
+  input[type="text"]{
+    -webkit-appearance: none!important;
+    color: black;
+    text-align: right;
+    width: 35px;
+    border: 1px solid gray;
+    border-left: 2px;
+    margin: 0 0 0 -7px;
+    background: white;
+    //border-radius: 4px;
+    padding: 4px 4px 4px 0;
+}
+input[type="number"]{
+    -webkit-appearance: none!important;
+    border: 1px solid gray;
+    border-right: 2px;
+    outline: none;
+    text-align: right;
+    padding: 4px 0 4px 4px;
+    border-radius: 4px;
+}
+.validField::after{
+    content: '*';
+    color: red;
+}
+button{
+    padding: 4px 24px;
+    border-radius: 1rem;
+}
+.modal-dialog{
+    max-width: auto;
+}

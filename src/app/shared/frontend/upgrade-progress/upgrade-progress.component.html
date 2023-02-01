@@ -1,0 +1,14 @@
+<div class="flex set-center">
+    <div class="wrap-active">
+        <div class="in-stage" *ngIf="stage ==1">1</div>
+        <div class="success-stage" *ngIf="stage >1">1</div>
+        <p>Input Detail</p>
+    </div>
+    <div class="line"></div>
+    <div [ngClass]="{'wrap-active': stage >=2,'wrap-dis': stage <2}">
+        <div class="in-stage" *ngIf="stage ==2">2</div>
+        <div class="dis-stage"  *ngIf="stage < 2">2</div>
+        <div class="success-stage" *ngIf="stage >2">2</div>
+        <p>Review & Confirm</p>
+    </div>
+</div>
